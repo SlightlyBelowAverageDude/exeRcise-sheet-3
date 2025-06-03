@@ -68,3 +68,19 @@ pixarFilmsSeriesSummary <- pixarFilmsSeries %>%
 #printing the Summary
 print(pixarFilmsSeriesSummary)
 ```
+#### c)
+```{r, echo=TRUE}
+publicResponse <- read.csv("public_response.csv")
+publicResponse
+unique(publicResponse$cinema_score)
+#while there are only A, A+ and A-, I will follow this pattern futher down for consistency
+scoreGrades <- c("F", "F+", "D-", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A", "A+")
+
+publicResponse$cinema_score <- factor(publicResponse$cinema_score,
+                                       levels = scoreGrades,
+                                       ordered = TRUE)
+
+#left-merging with common key "film"
+pixarFilmsScoresCombined <- merge(pixarFilms, publicResponse, by = "film", all.x = TRUE)
+
+```
