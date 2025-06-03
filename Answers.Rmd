@@ -35,3 +35,36 @@ pixarFilms$film_rating <- factor(pixarFilms$film_rating,
                                   ordered = TRUE)
 #It makes sense, as one rating includes and overranks other, previous ratings.
 ```
+
+#### b)
+```{r setup, echo=TRUE}
+#all unique titles
+unique(pixarFilms$film)
+#Series
+#The Incredibles (1 and 2), Cars (1, 2 and 3), Toy Story (1, 2, 3 and 4), potentially also "Monsters, Inc." and "Monsters University", but unsure if they count. The same issue is with "Finding Nemo" and "Funding Dory", and also with "Lightyear" and the Toy Story Series, but that one I will ignore due to the radical difference.
+
+#new column
+pixarFilms$series <- NA
+
+#manual assignement based on title structure
+pixarFilms$series[grepl("Toy Story", pixarFilms$film)] <- "Toy Story"
+pixarFilms$series[grepl("Cars", pixarFilms$film)] <- "Cars"
+pixarFilms$series[grepl("Finding", pixarFilms$film)] <- "Finding"
+pixarFilms$series[grepl("Monsters", pixarFilms$film)] <- "Monsters"
+pixarFilms$series[grepl("Incredibles", pixarFilms$film) | grepl("The Incredibles", pixarFilms$film)] <- "The Incredibles"
+
+#Series Dataframe and Summary
+pixarFilmsSeries <- subset(pixarFilms, !is.na(series))
+
+library(dplyr)
+pixarFilmsSeriesSummary <- pixarFilmsSeries %>%
+  group_by(series) %>%
+  summarise(
+    numberOfFilms = n(),
+    filmTitles = paste(film, collapse = "; ")
+  ) %>%
+  arrange(desc(numberOfFilms))
+
+#printing the Summary
+print(pixarFilmsSeriesSummary)
+```
