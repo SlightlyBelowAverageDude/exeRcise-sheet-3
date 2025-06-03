@@ -35,6 +35,3 @@ pixarFilms$film_rating <- factor(pixarFilms$film_rating,
                                   ordered = TRUE)
 #It makes sense, as one rating includes and overranks other, previous ratings.
 ```
-
-
-
