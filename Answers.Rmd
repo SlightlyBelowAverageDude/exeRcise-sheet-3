@@ -19,6 +19,22 @@ Weaknesses:
 Character limit in the commit messages limits the maximum complexity of the commit
 Branches, merge-conflicts, and other git aspects technically increase the complexity of the task, as it adds on top of the actual programming task.
 
+### 3
+#### a)
+```{r setup, echo=TRUE}
+pixarFilms <- read.csv("pixar_films.csv")
+#for debug:
+colnames(pixarFilms)
+
+pixarFilms <- pixarFilms[!is.na(pixarFilms$film) & pixarFilms$film != "", ]
+
+unique(pixarFilms$film_rating)
+#the film rating says, what the minimum age requirement is for watching the movie
+pixarFilms$film_rating <- factor(pixarFilms$film_rating,
+                                  levels = c("G", "PG", "N/A"),
+                                  ordered = TRUE)
+#It makes sense, as one rating includes and overranks other, previous ratings.
+```
 
 
 
