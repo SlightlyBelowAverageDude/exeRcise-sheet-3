@@ -1,0 +1,24 @@
+---
+title: "Answers"
+output: html_document
+date: "2025-06-03"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Answers for ExerciseSheet 3
+
+#### 1 d)
+Strength of git:
+It allows for version control, where the development proccess is split up into different versions, allowing for rollback onto a previous version.
+It also allows for (asynchronous) collaboration with branches.
+
+Weaknesses:
+Character limit in the commit messages limits the maximum complexity of the commit
+Branches, merge-conflicts, and other git aspects technically increase the complexity of the task, as it adds on top of the actual programming task.
+
+
+
+
