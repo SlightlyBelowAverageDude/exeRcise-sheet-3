@@ -84,3 +84,28 @@ publicResponse$cinema_score <- factor(publicResponse$cinema_score,
 pixarFilmsScoresCombined <- merge(pixarFilms, publicResponse, by = "film", all.x = TRUE)
 
 ```
+
+#### d)
+```{r, echo=TRUE}
+#I choose rotten tomatoes for the graph, as it represents the opinion of the general audience, especially more so than cinema_score or critics_choice
+library(ggplot2)
+seriesFilmsScoresCombined <- pixarFilmsScoresCombined %>%
+  filter(!is.na(series)) %>%
+  arrange(series, release_date)
+#ordered after release date
+seriesFilmsScoresCombined <- seriesFilmsScoresCombined %>%
+  mutate(orderedData = factor(film, levels = film[order(series, release_date)]))
+
+ggplot(seriesFilmsScoresCombined, aes(x = series, y = rotten_tomatoes, fill = orderedData)) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.8), width = 0.8) +
+  labs(
+    title = "Rotten Tomatoes Scores for Pixar Film Series",
+    x = "Pixar Film Series",
+    y = "Rotten Tomatoes Score (%)",
+    fill = "Film"
+  )
+#Generally, the sequels are rated lower than the first movies except for one clear outlier: Cars 2, which is rated significantly lower than its sequel.
+```
+
+
+
