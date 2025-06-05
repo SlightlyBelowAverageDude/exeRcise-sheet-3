@@ -16,7 +16,7 @@ It allows for version control, where the development proccess is split up into d
 It also allows for (asynchronous) collaboration with branches.
 
 Weaknesses:
-Character limit in the commit messages limits the maximum complexity of the commit
+Character limit in the commit message title limits the maximum complexity of the commit, however, the description does not have a limit
 Branches, merge-conflicts, and other git aspects technically increase the complexity of the task, as it adds on top of the actual programming task.
 
 ### 3
@@ -87,7 +87,7 @@ pixarFilmsScoresCombined <- merge(pixarFilms, publicResponse, by = "film", all.x
 
 #### d)
 ```{r, echo=TRUE}
-#I choose rotten tomatoes for the graph, as it represents the opinion of the general audience, especially more so than cinema_score or critics_choice
+#I chose rotten tomatoes for the graph, as it represents the opinion of the general audience, especially more so than cinema_score or critics_choice
 library(ggplot2)
 seriesFilmsScoresCombined <- pixarFilmsScoresCombined %>%
   filter(!is.na(series)) %>%
@@ -112,4 +112,47 @@ ggplot(seriesFilmsScoresCombined, aes(x = series, y = rotten_tomatoes, fill = or
 Dataset Name: "German road deaths and accidents - destatis"
 
 Link: https://github.com/owid/owid-datasets/blob/master/datasets/German%20road%20deaths%20and%20accidents%20-%20destatis/German%20road%20deaths%20and%20accidents%20-%20destatis.csv
+
+#### d)
+Did advancements in technology lead to both safer and in total less accidents over the years?
+
+#### e)
+```{r, echo=TRUE}
+GermanAccidents = read.csv("German road deaths and accidents - destatis.csv")
+#additionally taking a population into account
+GermanPopulation = read.csv("Germany-Population-Population-2025-06-05-20-14.csv", sep = ";")
+
+GermanPopulation <- GermanPopulation %>%
+  rename(Year = X)
+#leftjoin the Population to the accidents
+combinedAccidentsPop <- left_join(GermanAccidents, GermanPopulation, by = "Year")
+
+#filtering and cleaning
+GermanAccidentsCleaned <- combinedAccidentsPop %>%
+  select(Year, Accidents.reported.to.police, Road.deaths, Road.injuries, Population) %>%
+  filter(!is.na(Year), !is.na(Accidents.reported.to.police), !is.na(Road.deaths), !is.na(Road.injuries), !is.na(Population))
+
+#relativising the data, number of Deaths and Injuries relative to the number of accidents, and the number of accidents relativised to population that year
+relativisedGermanAccidentsCleaned <- GermanAccidentsCleaned %>%
+  mutate(
+    deathsPerAccident = Road.deaths / Accidents.reported.to.police,
+    injuriesPerAccident = Road.injuries / Accidents.reported.to.police,
+    accidentsPer100kPop = (Accidents.reported.to.police / Population) * 100000
+  )
+
+
+#correlation between year, which I use as the metric for the technological level, and the amount of crashes per 100k Pop.
+correlation <- cor(relativisedGermanAccidentsCleaned$Year, relativisedGermanAccidentsCleaned$accidentsPer100kPop)
+print(correlation)
+#there is a positive correlation between the year and the amount of crashes per 100k Pop, but that could be attributed to the higher amount of road vehicles on the road, and the relative affordability/accessibility of cars
+
+deathModel <- lm(deathsPerAccident ~ Year, data = relativisedGermanAccidentsCleaned)
+injuriesModel <- lm(injuriesPerAccident ~ Year, data = relativisedGermanAccidentsCleaned)
+library(easystats)
+report(deathModel)
+report(injuriesModel)
+
+#Both deaths and injuries show a strong and statistically significant decline over time, with more than 88% of the variance explained by the year. This trend supports the hypothesis, that the technological advancements (and improvements to the overall system, such as better medical treatments) make traffic accidents progressively less deadly and less prone to injuries over the past decades in Germany.
+```
+
 
