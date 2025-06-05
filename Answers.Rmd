@@ -16,7 +16,7 @@ It allows for version control, where the development proccess is split up into d
 It also allows for (asynchronous) collaboration with branches.
 
 Weaknesses:
-Character limit in the commit message title limits the maximum complexity of the commit, however, the description does not have a limit
+Character limit in the commit message title limits the maximum complexity of the commit, however, the description does not have a limit.
 Branches, merge-conflicts, and other git aspects technically increase the complexity of the task, as it adds on top of the actual programming task.
 
 ### 2 a)
@@ -24,7 +24,7 @@ Link to Github repo: https://github.com/SlightlyBelowAverageDude/exeRcise-sheet-
 
 ### 3
 #### a)
-```{r setup, echo=TRUE}
+```{r, echo=TRUE}
 pixarFilms <- read.csv("pixar_films.csv")
 #for debug:
 colnames(pixarFilms)
@@ -40,7 +40,7 @@ pixarFilms$film_rating <- factor(pixarFilms$film_rating,
 ```
 
 #### b)
-```{r setup, echo=TRUE}
+```{r, echo=TRUE}
 #all unique titles
 unique(pixarFilms$film)
 #Series
@@ -74,7 +74,6 @@ print(pixarFilmsSeriesSummary)
 #### c)
 ```{r, echo=TRUE}
 publicResponse <- read.csv("public_response.csv")
-publicResponse
 unique(publicResponse$cinema_score)
 #while there are only A, A+ and A-, I will follow this pattern futher down for consistency
 scoreGrades <- c("F", "F+", "D-", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A", "A+")
@@ -158,4 +157,15 @@ report(injuriesModel)
 #Both deaths and injuries show a strong and statistically significant decline over time, with more than 88% of the variance explained by the year. This trend supports the hypothesis, that the technological advancements (and improvements to the overall system, such as better medical treatments) make traffic accidents progressively less deadly and less prone to injuries over the past decades in Germany.
 ```
 
+```{r deaths-injuries-over-time, fig.cap="Figure 1: Trends in deaths and injuries per traffic accident in Germany from 1950 to 2020. Both metrics show a clear and strong decline over time, indicating improved traffic safety.", echo=TRUE, message=FALSE, warning=FALSE}
 
+ggplot(relativisedGermanAccidentsCleaned, aes(x = Year)) +
+  geom_line(aes(y = deathsPerAccident, color = "Deaths per Accident"), size = 1.25) +
+  geom_line(aes(y = injuriesPerAccident, color = "Injuries per Accident"), size = 1.25) +
+  labs(
+    title = "Deaths and Injuries per Accident Over Time",
+    x = "Year",
+    y = "Per-Accident Amount",
+    color = "Metric"
+  )
+```
