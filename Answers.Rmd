@@ -19,6 +19,9 @@ Weaknesses:
 Character limit in the commit message title limits the maximum complexity of the commit, however, the description does not have a limit
 Branches, merge-conflicts, and other git aspects technically increase the complexity of the task, as it adds on top of the actual programming task.
 
+### 2 a)
+Link to Github repo: https://github.com/SlightlyBelowAverageDude/exeRcise-sheet-3
+
 ### 3
 #### a)
 ```{r setup, echo=TRUE}
